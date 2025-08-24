@@ -1,6 +1,7 @@
 # Notes frontend
 
 Notes frontend is a simple web application for saving notes. It is developed using React and Vite.
+https://notesapp-frontend-alpha.vercel.app/
 ## Running the application on your own machine
 
 You can easily try out the application on your own machine. The current version of the application is developed using Node version 22.3.0. For the best experience, it is recommended to use the same major version of Node, but the application will likely work with other Node versions as well.
