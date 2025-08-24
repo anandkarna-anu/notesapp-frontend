@@ -12,9 +12,6 @@ const create = (newObject) => {
 }
 
 const update = (id, newObject) => {
-  // Note: Your backend does not seem to have an endpoint for updating a note.
-  // This will result in a 404 Not Found error.
-  // You would need to add a `app.put('/api/notes/:id', ...)` route to your backend.
   const request = axios.put(`${baseUrl}/${id}`, newObject)
   return request.then((response) => response.data)
 }

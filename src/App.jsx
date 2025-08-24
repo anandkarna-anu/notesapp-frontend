@@ -3,6 +3,7 @@ import Footer from './components/Footer'
 import Note from './components/Note'
 import Notification from './components/Notification'
 import noteService from './services/notes'
+import ColdStartBanner from './components/ColdStartBanner';
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -65,6 +66,7 @@ const App = () => {
 
   return (
     <div>
+      <ColdStartBanner />
       <h1>Notes</h1>
       <Notification message={errorMessage} />
       <div>
