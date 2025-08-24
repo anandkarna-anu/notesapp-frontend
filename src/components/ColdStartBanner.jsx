@@ -75,7 +75,7 @@ export default function ColdStartBanner() {
           
           {/* Message Content */}
           <p style={messageStyle}>
-            Please hang on for about 30 seconds; a cold start has been initiated for the backend server (Render's free tier service).
+            Please hang on for about 30 seconds; a cold start has been initiated for the backend server (-- Render's free tier service).
           </p>
           
           {/* Loading Animation */}
