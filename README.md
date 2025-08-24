@@ -15,7 +15,5 @@ Follow these steps to run the application:
 
 4. Start the application with the command `npm run dev`. By default, the application will start on port 5173, so it will be available at http://localhost:5173/
 
-5. If you are in branches part2-4 to part2-8, additionally start the JSON server by running the command `npm run server` in a separate terminal window
-
  the frontend is used with a [separate backend](https://github.com/anandkarna-anu/backend).
 
