@@ -11,10 +11,16 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
-    noteService.getAll().then(initialNotes => {
-      setNotes(initialNotes)
+  noteService.getAll()
+    .then(initialNotes => {
+      console.log('API Response:', initialNotes);
+      setNotes(Array.isArray(initialNotes) ? initialNotes : [])
     })
-  }, [])
+    .catch(error => {
+      console.error('Error fetching notes:', error);
+      setNotes([]);
+    })
+}, [])
 
   const addNote = event => {
     event.preventDefault()
@@ -53,7 +59,9 @@ const App = () => {
     setNewNote(event.target.value)
   }
 
-  const notesToShow = showAll ? notes : notes.filter(note => note.important)
+  const notesToShow = Array.isArray(notes) 
+  ? (showAll ? notes : notes.filter(note => note.important))
+  : []
 
   return (
     <div>
