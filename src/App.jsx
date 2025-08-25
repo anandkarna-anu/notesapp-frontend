@@ -4,6 +4,7 @@ import Note from './components/Note'
 import Notification from './components/Notification'
 import noteService from './services/notes'
 import ColdStartBanner from './components/ColdStartBanner'
+import PhoneBook from './components/PhoneBook' 
 
 const App = () => {
   const [notes, setNotes] = useState([])
@@ -71,46 +72,74 @@ const App = () => {
 
   return (
     <div>
-        <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      {/* 
-        Pass the status and error message to the banner.
-        The banner will now decide how to render itself based on these props.
-      */}
+    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
       <ColdStartBanner status={apiStatus} error={errorMessage} />
-
-      {/* Main content can be displayed once the backend is ready */}
-      {apiStatus === 'success' && (
-        <div>
-         
-        </div>
-      )}
       {apiStatus === 'loading' && (
         <p>Initializing connection with the server...</p>
       )}
     </div>
-      <h1>Notes</h1>
-      <Notification message={errorMessage} />
+
+    {/* Show content only when the API connection is successful */}
+    {apiStatus === 'success' && (
       <div>
-        <button onClick={() => setShowAll(!showAll)}>
-          show {showAll ? 'important' : 'all'}
-        </button>
+        {/* --- NOTES UI (UNCHANGED AS REQUESTED) --- */}
+        <h1>Notes</h1>
+        <Notification message={errorMessage} type="error" />
+        <div>
+          <button onClick={() => setShowAll(!showAll)}>
+            show {showAll ? 'important' : 'all'}
+          </button>
+        </div>
+        <ul>
+          {notesToShow.map(note => (
+            <Note
+              key={note.id}
+              note={note}
+              toggleImportance={() => toggleImportanceOf(note.id)}
+            />
+          ))}
+        </ul>
+        <form onSubmit={addNote}>
+          <input value={newNote} onChange={handleNoteChange} placeholder="Write a new note..." />
+          <button type="submit">save note</button>
+        </form>
+
+        <hr style={{ margin: '40px 0' }} /> {/* A separator for clarity */}
+
+        {/* --- PHONEBOOK UI (NEWLY ADDED) --- */}
+        <h1>Phonebook</h1>
+        <Notification message={phonebookMessage?.text} type={phonebookMessage?.type} />
+        
+        <h2>Add a new entry</h2>
+        <form onSubmit={addPerson}>
+          <div>
+            name: <input value={newName} onChange={handleNameChange} required />
+          </div>
+          <div>
+            number: <input value={newNumber} onChange={handleNumberChange} required />
+          </div>
+          <div>
+            <button type="submit">add person</button>
+          </div>
+        </form>
+
+        <h2>Numbers</h2>
+        <ul>
+          {persons.map(person => 
+            <li key={person.id}>
+              {person.name} {person.number} {' '}
+              <button onClick={() => deletePerson(person.id, person.name)}>
+                delete
+              </button>
+            </li>
+          )}
+        </ul>
       </div>
-      <ul>
-        {notesToShow.map(note => (
-          <Note
-            key={note.id}
-            note={note}
-            toggleImportance={() => toggleImportanceOf(note.id)}
-          />
-        ))}
-      </ul>
-      <form onSubmit={addNote}>
-        <input value={newNote} onChange={handleNoteChange} />
-        <button type="submit">save</button>
-      </form>
-      <Footer />
-    </div>
-  )
+    )}
+    
+    <Footer />
+  </div>
+)
 }
 
 export default App
