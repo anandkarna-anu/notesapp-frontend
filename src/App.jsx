@@ -78,13 +78,10 @@ const App = () => {
       */}
       <ColdStartBanner status={apiStatus} error={errorMessage} />
 
-      <h1>My Awesome App</h1>
-
       {/* Main content can be displayed once the backend is ready */}
       {apiStatus === 'success' && (
         <div>
-          <h2>Application Ready!</h2>
-          <p>You can now interact with the application.</p>
+         
         </div>
       )}
       {apiStatus === 'loading' && (
