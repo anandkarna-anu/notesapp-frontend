@@ -54,7 +54,7 @@ const keyframes = `
   }
 `;
 
-const ColdStartBanner = ({ status, error }) => {
+const ColdStartBanner = ({ status, error = 'An unknown error occurred.' }) => {
   // 1. Guard clause: If successful, render nothing.
   if (status === 'success') {
     return null;
@@ -104,10 +104,6 @@ const ColdStartBanner = ({ status, error }) => {
 ColdStartBanner.propTypes = {
   status: PropTypes.oneOf(['loading', 'success', 'error']).isRequired,
   error: PropTypes.string,
-};
-
-ColdStartBanner.defaultProps = {
-  error: 'An unknown error occurred.',
 };
 
 export default ColdStartBanner;
