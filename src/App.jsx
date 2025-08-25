@@ -13,6 +13,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [apiStatus, setApiStatus] = useState('loading');
+   const [phonebookMessage, setPhonebookMessage] = useState(null)
 
   //state for phonebook
   const [persons, setPersons] = useState([])
@@ -140,24 +141,34 @@ const App = () => {
 
   return (
     <div>
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <ColdStartBanner status={apiStatus} error={errorMessage} />
-      {apiStatus === 'loading' && (
-        <p>Initializing connection with the server...</p>
-      )}
-    </div>
+      <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
+        <ColdStartBanner status={apiStatus} error={errorMessage} />
+      </div>
 
-    {/* Show content only when the API connection is successful */}
-    {apiStatus === 'success' && (
+      {/* --- NOTES UI --- */}
+      <h1>Notes</h1>
+      <Notification message={errorMessage} type="error" />
+      <form onSubmit={addNote}>
+        <input 
+          value={newNote} 
+          onChange={handleNoteChange} 
+          placeholder="Write a new note..." 
+        />
+        <button type="submit" disabled={apiStatus !== 'success'}>
+          {apiStatus === 'loading' ? 'Connecting...' : 'save note'}
+        </button>
+      </form>
       <div>
-        {/* --- NOTES UI (UNCHANGED AS REQUESTED) --- */}
-        <h1>Notes</h1>
-        <Notification message={errorMessage} type="error" />
-        <div>
-          <button onClick={() => setShowAll(!showAll)}>
-            show {showAll ? 'important' : 'all'}
-          </button>
-        </div>
+        <button onClick={() => setShowAll(!showAll)}>
+          show {showAll ? 'important' : 'all'}
+        </button>
+      </div>
+      
+      {/* Show a loading message for the list */}
+      {apiStatus === 'loading' && <p>Loading notes...</p>}
+      
+      {/* ONLY the list depends on the API call succeeding */}
+      {apiStatus === 'success' && (
         <ul>
           {notesToShow.map(note => (
             <Note
@@ -167,30 +178,36 @@ const App = () => {
             />
           ))}
         </ul>
-        <form onSubmit={addNote}>
-          <input value={newNote} onChange={handleNoteChange} placeholder="Write a new note..." />
-          <button type="submit">save note</button>
-        </form>
+      )}
+      
+      <hr style={{ margin: '40px 0' }} />
 
-        <hr style={{ margin: '40px 0' }} /> {/* A separator for clarity */}
+      {/* --- PHONEBOOK UI --- */}
+      <h1>Phonebook</h1>
+      {/* Make sure you have a Notification component that can handle the phonebookMessage state */}
 
-        {/* --- PHONEBOOK UI (NEWLY ADDED) --- */}
-        <h1>Phonebook</h1>
-        
-        <h2>Add a new entry</h2>
-        <form onSubmit={addPerson}>
-          <div>
-            name: <input value={newName} onChange={handleNameChange} required />
-          </div>
-          <div>
-            number: <input value={newNumber} onChange={handleNumberChange} required />
-          </div>
-          <div>
-            <button type="submit">add person</button>
-          </div>
-        </form>
+      
+      <h2>Add a new entry</h2>
+      <form onSubmit={addPerson}>
+        <div>
+          name: <input value={newName} onChange={handleNameChange} required />
+        </div>
+        <div>
+          number: <input value={newNumber} onChange={handleNumberChange} required />
+        </div>
+        <div>
+          <button type="submit" disabled={apiStatus !== 'success'}>
+            {apiStatus === 'loading' ? 'Connecting...' : 'add person'}
+          </button>
+        </div>
+      </form>
 
-        <h2>Numbers</h2>
+      <h2>Numbers</h2>
+      {/* Show a loading message for the list */}
+      {apiStatus === 'loading' && <p>Loading phonebook...</p>}
+
+      {/* ONLY the list of people depends on the API call */}
+      {apiStatus === 'success' && (
         <ul>
           {persons.map(person => 
             <li key={person.id}>
@@ -201,12 +218,11 @@ const App = () => {
             </li>
           )}
         </ul>
-      </div>
-    )}
-    
-    <Footer />
-  </div>
-)
+      )}
+      
+      <Footer />
+    </div>
+  )
 }
 
 export default App
