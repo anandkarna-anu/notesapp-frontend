@@ -5,7 +5,7 @@ import axios from 'axios'
 // If your frontend and backend are on the same origin (like with a proxy), you can use a relative URL.
 // If not, you'll need the full URL like 'http://localhost:3001/api/persons' for local dev.
 // For now, a relative URL is often the best practice.
-const baseUrl = import.meta.env.VITE_API_BASE_URL + '/api/persons'
+const baseUrl = `${import.meta.env.VITE_API_BASE_URL}/api/notes`
 
 const getAll = () => {
   const request = axios.get(baseUrl)
